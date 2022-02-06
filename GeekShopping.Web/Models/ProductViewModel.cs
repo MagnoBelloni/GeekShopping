@@ -16,10 +16,10 @@ namespace GeekShopping.Web.Models
 
         public string SubstringName() 
         {
-            if (Name.Length < 24)
+            if (Name.Length < 19)
                 return Name;
 
-            return $"{Name.Substring(0, 21)}...";
+            return $"{Name.Substring(0, 16)}...";
         }
 
         public string SubstringDescription()

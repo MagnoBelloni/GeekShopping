@@ -3,7 +3,6 @@ using GeekShopping.CartAPI.Data.ValueObjects;
 using GeekShopping.CartAPI.Model;
 using GeekShopping.CartAPI.Model.Context;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace GeekShopping.CartAPI.Repository
 {

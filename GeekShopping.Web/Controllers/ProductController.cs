@@ -42,6 +42,7 @@ namespace GeekShopping.Web.Controllers
             return View(product);
         }
 
+        [Authorize]
         public async Task<IActionResult> ProductUpdate(int id)
         {
             var token = await HttpContext.GetTokenAsync("access_token");
