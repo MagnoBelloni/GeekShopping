@@ -72,13 +72,35 @@
                     }
                     <div class="row">
                         <div class="col-6">
-                            <span>Coupon:</span>
-                            <input asp-for="CartHeader.CouponCode" />
-                            <button type="submit" asp-action="ApplyCoupon" class="btn-success">
-                                Apply
-                            </button>
+                            @if (string.IsNullOrEmpty(Model.CartHeader.CouponCode))
+                            {
+                                <span>Coupon:</span>
+                                <input asp-for="CartHeader.CouponCode" />
+                                <button type="submit" asp-action="ApplyCoupon" class="btn-success">
+                                    Apply
+                                </button>
+                            }
+                            else
+                            {
+                                <span>Coupon:</span>
+                                <input asp-for="CartHeader.CouponCode" disabled/>
+                                <button type="submit" asp-action="RemoveCoupon" asp-route-id="@Model.CartHeader.UserId" class="btn-danger">
+                                    Remove
+                                </button>
+                            }
                         </div>
                         <div class="col-6 text-end">
+                            @if (Model.CartHeader.DiscountAmount > 0)
+                            {
+                                <span style="font-size:15px;">
+                                    Purchase Amount without Discount: <s>@string.Format("{0:c}",Model.CartHeader.PurchaseAmount + Model.CartHeader.DiscountAmount)</s>
+                                    <br />
+                                </span>
+                                <span class="text-success">
+                                    Discount Amount: @string.Format("{0:c}", Model.CartHeader.DiscountAmount)
+                                    <br />
+                                </span>
+                            }
                             <span class="text-danger" style="font-size:21px;">
                                 Purchase Amount: @string.Format("{0:c}", Model.CartHeader.PurchaseAmount)
                                 <br />

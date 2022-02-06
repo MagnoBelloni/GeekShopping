@@ -55,9 +55,27 @@ namespace GeekShopping.Web.Services
             return await response.ReadContentAs<bool>();
         }
 
-        public async Task<bool> ApplyCoupon(CartViewModel cart, string couponCode, string token)
+        public async Task<bool> ApplyCoupon(ApplyCouponViewModel vo, string token)
         {
-            throw new NotImplementedException();
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client.PostAsJson($"{BasePath}/apply-coupon", vo);
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Something went wrong when calling API");
+
+            return await response.ReadContentAs<bool>();
+        }
+
+
+        public async Task<bool> RemoveCoupon(string userId, string token)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client.DeleteAsync($"{BasePath}/remove-coupon/{userId}");
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Something went wrong when calling API");
+
+            return await response.ReadContentAs<bool>();
         }
 
         public async Task<CartViewModel> Checkout(CartHeaderViewModel cartHeader, string token)
@@ -69,13 +87,6 @@ namespace GeekShopping.Web.Services
         {
             throw new NotImplementedException();
         }
-
-
-        public async Task<bool> RemoveCoupon(string userId, string token)
-        {
-            throw new NotImplementedException();
-        }
-
 
     }
 }
