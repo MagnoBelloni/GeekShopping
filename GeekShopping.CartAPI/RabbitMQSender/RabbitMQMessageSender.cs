@@ -24,32 +24,22 @@ namespace GeekShopping.CartAPI.RabbitMQSender
 
         public void SendMessage(BaseMessage message, string queueName)
         {
-            try
+            var factory = new ConnectionFactory
             {
+                HostName = _hostName,
+                UserName = _userName,
+                Password = _password,
+            };
 
-                var factory = new ConnectionFactory
-                {
-                    HostName = _hostName,
-                    UserName = _userName,
-                    Password = _password,
-               
-                };
+            _connection = factory.CreateConnection();
 
-                _connection = factory.CreateConnection();
+            using var channel = _connection.CreateModel();
 
-                using var channel = _connection.CreateModel();
+            channel.QueueDeclare(queue: queueName, false, false, false, arguments: null);
 
-                channel.QueueDeclare(queue: queueName, false, false, false, arguments: null);
-            
-                byte[] body = GetMessageAsByteArray(message);
-            
-                channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
-            }
-            catch (Exception ex)
-            {
+            byte[] body = GetMessageAsByteArray(message);
 
-                throw;
-            }
+            channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
         }
 
         private static byte[] GetMessageAsByteArray(BaseMessage message)
