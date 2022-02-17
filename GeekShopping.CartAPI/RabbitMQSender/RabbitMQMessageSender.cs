@@ -11,7 +11,6 @@ namespace GeekShopping.CartAPI.RabbitMQSender
         private readonly string _hostName;
         private readonly string _userName;
         private readonly string _password;
-        private readonly int _port;
         private IConnection _connection;
 
         public RabbitMQMessageSender()
@@ -19,7 +18,6 @@ namespace GeekShopping.CartAPI.RabbitMQSender
             _hostName = "localhost";
             _userName = "guest";
             _password = "guest";
-            _port = 15672;
         }
 
         public void SendMessage(BaseMessage message, string queueName)

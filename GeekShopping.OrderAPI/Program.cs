@@ -44,6 +44,7 @@ builder.Services.AddAuthorization(options =>
 
 var app = builder.Build();
 
+//Enable Legacy Timestamp for DateTime Fields in Postgress
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.UseHttpsRedirection();
