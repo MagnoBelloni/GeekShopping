@@ -114,5 +114,13 @@ namespace GeekShopping.CartAPI.Controllers
 
             return Ok(vo);
         }
+
+        [HttpDelete("clear-cart/{userId}")]
+        public async Task<ActionResult> Checkout(string userId)
+        {
+            await _cartRepository.ClearCart(userId);
+
+            return Ok();
+        }
     }
 }

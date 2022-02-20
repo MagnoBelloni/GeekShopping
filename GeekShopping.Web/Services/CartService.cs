@@ -97,7 +97,13 @@ namespace GeekShopping.Web.Services
 
         public async Task<bool> ClearCart(string userId, string token)
         {
-            throw new NotImplementedException();
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _client.DeleteAsync($"{BasePath}/clear-cart/{userId}");
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Something went wrong when calling API");
+
+            return await response.ReadContentAs<bool>();
         }
 
     }
