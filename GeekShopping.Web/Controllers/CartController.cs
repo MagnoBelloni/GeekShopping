@@ -30,7 +30,6 @@ namespace GeekShopping.Web.Controllers
         {
             return View(await FindUserCart());
         }
-
         
         [HttpPost]
         [ActionName("ApplyCoupon")]
@@ -72,7 +71,8 @@ namespace GeekShopping.Web.Controllers
 
             return View();
         }
-        
+
+        //Remove item from cart
         public async Task<IActionResult> Remove(int id)
         {
             var token = await HttpContext.GetTokenAsync("access_token");
@@ -87,7 +87,6 @@ namespace GeekShopping.Web.Controllers
 
             return View();
         }
-
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Checkout()

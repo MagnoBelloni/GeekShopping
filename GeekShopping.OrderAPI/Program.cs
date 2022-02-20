@@ -1,8 +1,8 @@
 using GeekShopping.OrderAPI.MessageConsumer;
 using GeekShopping.OrderAPI.Model.Context;
+using GeekShopping.OrderAPI.RabbitMQSender;
 using GeekShopping.OrderAPI.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,28 +19,10 @@ dbBuilder.UseNpgsql(connection);
 builder.Services.AddSingleton(new OrderRepository(dbBuilder.Options));
 
 builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
+builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
+builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
 
 builder.Services.AddControllers();
-
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", options =>
-    {
-        options.Authority = "https://localhost:4435/";
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateAudience = false
-        };
-    });
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("ApiScope", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.RequireClaim("scope", "geek_shopping");
-    });
-});
-
 
 var app = builder.Build();
 
